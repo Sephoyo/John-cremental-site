@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>John'cremental — Fais renaître la ferme de ton grand-père</title>
+  <meta name="description" content="Un jeu incrémental cosy en pixel art : plante, embauche des gobelins, élève des poules et renais plus fort grâce aux graines d'or. Démo gratuite jouable dans le navigateur.">
+  <meta name="theme-color" content="#2b1d1a">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="John'cremental — Fais renaître la ferme de ton grand-père">
+  <meta property="og:description" content="Jeu incrémental cosy en pixel art. Démo gratuite jouable dans le navigateur.">
+  <meta property="og:image" content="assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/sprites/icon-32.png">
+  <link rel="apple-touch-icon" href="assets/sprites/icon-180.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,600;0,700;1,400&family=MedievalSharp&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#main" data-i18n="skip">Aller au contenu</a>
+
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <a class="brand" href="#top" aria-label="John'cremental">
+        <span class="sprite sprite--john-head" aria-hidden="true"></span>
+        <span class="brand__name">John'cremental</span>
+      </a>
+      <nav class="nav" aria-label="Navigation">
+        <a href="#histoire" data-i18n="nav_story">L'histoire</a>
+        <a href="#jeu" data-i18n="nav_game">Le jeu</a>
+        <a href="#galerie" data-i18n="nav_gallery">Galerie</a>
+        <a href="#faq" data-i18n="nav_faq">FAQ</a>
+      </nav>
+      <div class="topbar__actions">
+        <button class="lang" type="button" id="lang-toggle" aria-label="Switch to English">EN</button>
+        <a class="btn btn--small btn--brass" data-link="steam" href="#souhaits" data-i18n="cta_wishlist_short">Liste de souhaits</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Haut de page : la ferme en mouvement -->
+    <section class="hero" id="top">
+      <video class="hero__video" autoplay muted loop playsinline preload="metadata" poster="assets/shots/hero_poster.png" aria-hidden="true">
+        <source src="assets/farm_loop.webm" type="video/webm">
+        <source src="assets/farm_loop.mp4" type="video/mp4">
+      </video>
+      <div class="hero__shade"></div>
+      <div class="wrap hero__content">
+        <p class="eyebrow" data-i18n="hero_eyebrow">Jeu incrémental cosy · Pixel art</p>
+        <h1 class="hero__title">John'cremental</h1>
+        <p class="hero__tagline" data-i18n="hero_tagline">La ferme de ton grand-père t'attend. Fais-la renaître.</p>
+        <p class="hero__text" data-i18n="hero_text">Plante, récolte, embauche des gobelins qui travaillent pour un bol de soupe, puis renais plus fort grâce aux graines d'or. Une ferme qui n'arrête jamais de pousser.</p>
+        <div class="cta-row">
+          <a class="btn btn--brass btn--big" data-link="steam" href="#souhaits">
+            <span class="btn__icon" aria-hidden="true">★</span>
+            <span data-i18n="cta_wishlist">Ajouter à ma liste de souhaits</span>
+          </a>
+          <a class="btn btn--ghost btn--big" data-link="demo" href="#demo">
+            <span class="btn__icon" aria-hidden="true">▶</span>
+            <span data-i18n="cta_demo">Jouer à la démo gratuite</span>
+          </a>
+        </div>
+        <ul class="badges">
+          <li data-i18n="badge_free">Démo gratuite</li>
+          <li data-i18n="badge_browser">Jouable dans le navigateur</li>
+          <li data-i18n="badge_save">Sauvegarde automatique</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- L'histoire -->
+    <section class="section section--parchment" id="histoire">
+      <div class="wrap split">
+        <figure class="frame frame--tilt">
+          <img src="assets/shots/dream.png" width="1280" height="576" loading="lazy"
+               alt="La ferme d'autrefois, dorée : champs de tournesols et de citrouilles, gobelins au travail, moulin rouge.">
+          <figcaption data-i18n="story_caption">La ferme d'autrefois, au temps des graines d'or.</figcaption>
+        </figure>
+        <div class="split__text">
+          <p class="eyebrow eyebrow--ink" data-i18n="story_eyebrow">Il était une fois Blémont</p>
+          <h2 data-i18n="story_title">Autrefois, la vallée nourrissait tout le royaume.</h2>
+          <p data-i18n="story_p1">On y semait des graines d'or, confiées aux fermiers par un vieux sage. Puis vint l'orage. Des années plus tard, John revient sur les terres de son grand-père : une ferme en ruine, un gobelin endormi près du feu, et une lettre.</p>
+          <p data-i18n="story_p2">À toi de remettre la ferme sur pied, de ranimer le village… et de découvrir ce que le vieux sage sait vraiment des graines d'or.</p>
+          <div class="cast" aria-hidden="true">
+            <span class="sprite sprite--grandpa"></span>
+            <span class="sprite sprite--john"></span>
+            <span class="sprite sprite--goblin"></span>
+            <span class="sprite sprite--sage"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- La boucle de jeu -->
+    <section class="section section--wood" id="jeu">
+      <div class="wrap">
+        <p class="eyebrow center" data-i18n="loop_eyebrow">Comment on joue</p>
+        <h2 class="center" data-i18n="loop_title">Une boucle simple. Une ferme qui grandit sans fin.</h2>
+        <ol class="loop">
+          <li class="card">
+            <div class="card__art" aria-hidden="true">
+              <span class="sprite sprite--crop sprite--radish"></span>
+              <span class="sprite sprite--crop sprite--sunflower"></span>
+              <span class="sprite sprite--crop sprite--potato"></span>
+            </div>
+            <h3><span class="step">1</span> <span data-i18n="loop_1_title">Plante et vends</span></h3>
+            <p data-i18n="loop_1_text">Radis, blé, citrouille, tournesol, pomme de terre… Chaque nouvelle graine rapporte plus que la précédente.</p>
+          </li>
+          <li class="card">
+            <div class="card__art" aria-hidden="true"><span class="sprite sprite--goblin-run"></span></div>
+            <h3><span class="step">2</span> <span data-i18n="loop_2_title">Automatise</span></h3>
+            <p data-i18n="loop_2_text">Embauche les gobelins de la mine : ils récoltent et replantent pour toi, même quand tu t'absentes.</p>
+          </li>
+          <li class="card">
+            <div class="card__art" aria-hidden="true">
+              <span class="sprite sprite--chicken"></span>
+              <span class="sprite sprite--egg"></span>
+            </div>
+            <h3><span class="step">3</span> <span data-i18n="loop_3_title">Développe</span></h3>
+            <p data-i18n="loop_3_text">Arroseur, moulin, enclos, poules pondeuses : chaque amélioration change ta façon de jouer.</p>
+          </li>
+          <li class="card">
+            <div class="card__art" aria-hidden="true"><span class="sprite sprite--sage"></span></div>
+            <h3><span class="step">4</span> <span data-i18n="loop_4_title">Renais</span></h3>
+            <p data-i18n="loop_4_text">Quand le vieux sage t'appelle, recommence avec des graines dorées et des bonus permanents. Chaque partie va plus loin.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Ce qui rend le jeu unique -->
+    <section class="section section--parchment">
+      <div class="wrap features">
+        <article class="feature">
+          <figure class="frame">
+            <img src="assets/shots/village.png" width="1280" height="720" loading="lazy"
+                 alt="Le village de Blémont : fontaine, boutiques, grand-mère qui dort sur son banc, enclos de Barnabé.">
+          </figure>
+          <div class="feature__text">
+            <span class="sprite sprite--barnabe" aria-hidden="true"></span>
+            <h2 data-i18n="f1_title">Un village qui reprend vie</h2>
+            <p data-i18n="f1_text">La grand-mère qui somnole sur son banc, le forgeron à son enclume, la lavandière, le barde… Et un beau jour, Barnabé l'éleveur arrive en charrette avec ses bêtes.</p>
+          </div>
+        </article>
+        <article class="feature feature--flip">
+          <figure class="frame">
+            <img src="assets/shots/pen.png" width="1280" height="720" loading="lazy"
+                 alt="L'enclos réparé de la ferme, avec trois poules qui viennent de pondre.">
+          </figure>
+          <div class="feature__text">
+            <span class="sprite sprite--chicken" aria-hidden="true"></span>
+            <h2 data-i18n="f2_title">Des poules, des œufs, des pièces</h2>
+            <p data-i18n="f2_text">Répare le vieil enclos, achète des poules à Barnabé et mène-les toi-même jusqu'à la ferme. Elles pondent sans relâche, et leurs œufs se vendent cher au marché.</p>
+          </div>
+        </article>
+        <article class="feature">
+          <figure class="frame">
+            <img src="assets/shots/farm.png" width="1280" height="720" loading="lazy"
+                 alt="La ferme en pleine activité : champ irrigué, gobelins qui récoltent, camp de la mine et moulin.">
+          </figure>
+          <div class="feature__text">
+            <span class="sprite sprite--goblin" aria-hidden="true"></span>
+            <h2 data-i18n="f3_title">Une ferme qui travaille pour toi</h2>
+            <p data-i18n="f3_text">Le fossé se remplit, le moulin tourne, les gobelins s'activent et la soupe mijote au camp. Fais une pause : en revenant, la récolte t'attend.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Galerie -->
+    <section class="section section--night" id="galerie">
+      <div class="wrap">
+        <p class="eyebrow center" data-i18n="gallery_eyebrow">Galerie</p>
+        <h2 class="center" data-i18n="gallery_title">Un monde en pixel art fait main</h2>
+        <div class="gallery">
+          <button class="gallery__item gallery__item--wide" type="button" data-full="assets/shots/farm_nohud.png">
+            <img src="assets/shots/farm_nohud.png" width="1280" height="720" loading="lazy" alt="La ferme vue d'en haut, gobelins au travail.">
+          </button>
+          <button class="gallery__item" type="button" data-full="assets/shots/dream.png">
+            <img src="assets/shots/dream.png" width="1280" height="576" loading="lazy" alt="Le rêve de l'intro : la ferme d'autrefois.">
+          </button>
+          <button class="gallery__item" type="button" data-full="assets/shots/village.png">
+            <img src="assets/shots/village.png" width="1280" height="720" loading="lazy" alt="Le village et sa fontaine.">
+          </button>
+          <button class="gallery__item" type="button" data-full="assets/shots/pen.png">
+            <img src="assets/shots/pen.png" width="1280" height="720" loading="lazy" alt="Les poules dans l'enclos.">
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Démo -->
+    <section class="section section--wood" id="demo">
+      <div class="wrap demo">
+        <div class="demo__text">
+          <p class="eyebrow" data-i18n="demo_eyebrow">Gratuit, tout de suite</p>
+          <h2 data-i18n="demo_title">Essaie la démo dans ton navigateur</h2>
+          <p data-i18n="demo_text">Environ deux heures de jeu, trois renaissances et l'arrivée de Barnabé. Rien à installer, et ta progression est sauvegardée automatiquement.</p>
+          <ul class="facts">
+            <li><span class="sprite sprite--coin" aria-hidden="true"></span> <span data-i18n="fact_free">Gratuite</span></li>
+            <li><span class="sprite sprite--coin" aria-hidden="true"></span> <span data-i18n="fact_time">≈ 2 h de jeu</span></li>
+            <li><span class="sprite sprite--coin" aria-hidden="true"></span> <span data-i18n="fact_controls">Clavier et souris</span></li>
+            <li><span class="sprite sprite--coin" aria-hidden="true"></span> <span data-i18n="fact_lang">En français</span></li>
+          </ul>
+          <a class="btn btn--brass btn--big" data-link="demo" href="#demo">
+            <span class="btn__icon" aria-hidden="true">▶</span>
+            <span data-i18n="cta_play_now">Jouer maintenant</span>
+          </a>
+        </div>
+        <figure class="frame frame--tilt-right">
+          <img src="assets/shots/farm.png" width="1280" height="720" loading="lazy" alt="L'interface du jeu : pièces, stock, champ et gobelins au travail.">
+        </figure>
+      </div>
+    </section>
+
+    <!-- Liste de souhaits -->
+    <section class="section section--parchment wishlist" id="souhaits">
+      <div class="wrap wishlist__inner">
+        <div class="cast cast--big" aria-hidden="true">
+          <span class="sprite sprite--chicken"></span>
+          <span class="sprite sprite--john"></span>
+          <span class="sprite sprite--goblin"></span>
+        </div>
+        <h2 data-i18n="wish_title">Ajoute John'cremental à ta liste de souhaits</h2>
+        <p data-i18n="wish_text">C'est gratuit et ça prend dix secondes. Pour un petit jeu indépendant, c'est ce qui compte le plus : chaque liste de souhaits aide le jeu à être vu sur Steam, et tu seras prévenu dès sa sortie.</p>
+        <a class="btn btn--brass btn--big" data-link="steam" href="#souhaits">
+          <span class="btn__icon" aria-hidden="true">★</span>
+          <span data-i18n="cta_wishlist">Ajouter à ma liste de souhaits</span>
+        </a>
+        <p class="note" id="steam-note" hidden data-i18n="steam_note">La page Steam arrive très bientôt. En attendant, la démo est jouable gratuitement !</p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section section--night" id="faq">
+      <div class="wrap faq">
+        <h2 class="center" data-i18n="faq_title">Questions fréquentes</h2>
+        <details>
+          <summary data-i18n="q1">C'est quoi, un jeu incrémental ?</summary>
+          <p data-i18n="a1">Un jeu où tes gains grandissent sans cesse : tu réinvestis pour produire plus, tu automatises, puis tu recommences plus fort. John'cremental y ajoute une vraie ferme à parcourir, des personnages et une histoire.</p>
+        </details>
+        <details>
+          <summary data-i18n="q2">Quand sort le jeu complet ?</summary>
+          <p data-i18n="a2">Le jeu est en développement. Ajoute-le à ta liste de souhaits pour être prévenu de sa sortie ; en attendant, la démo est jouable gratuitement.</p>
+        </details>
+        <details>
+          <summary data-i18n="q3">Le jeu avance quand je ne joue pas ?</summary>
+          <p data-i18n="a3">Oui : tes gobelins récoltent et tes poules pondent pendant ton absence, jusqu'à deux heures comptées. Tu retrouves ta récolte en revenant.</p>
+        </details>
+        <details>
+          <summary data-i18n="q4">Sur quoi peut-on jouer ?</summary>
+          <p data-i18n="a4">Le jeu complet est prévu sur PC (Steam). La démo se joue directement dans le navigateur, au clavier et à la souris.</p>
+        </details>
+        <details>
+          <summary data-i18n="q5">Ma partie est-elle sauvegardée ?</summary>
+          <p data-i18n="a5">Oui, automatiquement, dans ton navigateur. Attention : en navigation privée, ou si tu effaces les données du site, la partie est perdue.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <a class="brand" href="#top">
+        <span class="sprite sprite--john-head" aria-hidden="true"></span>
+        <span class="brand__name">John'cremental</span>
+      </a>
+      <p class="footer__links">
+        <a data-link="steam" href="#souhaits">Steam</a>
+        <a data-link="demo" href="#demo" data-i18n="footer_demo">Démo</a>
+      </p>
+      <p class="footer__small" data-i18n="footer_credits">Pixel art basé sur le pack Sunnyside World. Bruitages : packs audio de Kenney (kenney.nl, CC0). Polices MedievalSharp et Alegreya.</p>
+      <p class="footer__small">© 2026 John'cremental</p>
+    </div>
+  </footer>
+
+  <dialog class="lightbox" id="lightbox" aria-label="Capture d'écran">
+    <img id="lightbox-img" src="" alt="">
+    <button class="lightbox__close" type="button" id="lightbox-close" aria-label="Fermer">✕</button>
+  </dialog>
+
+  <script src="main.js"></script>
+</body>
+</html>
