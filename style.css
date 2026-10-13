@@ -196,12 +196,11 @@ p { margin: 0 0 1em; }
   position: relative;
 }
 /* Entre deux cartes : un médaillon doré (comme les numéros) avec une flèche en pixels,
-   centré dans l'espace entre les cartes (bordure comprise), à la hauteur du milieu des
-   illustrations (marge du haut 20px + moitié de 124px). Plus petit que l'espace : il ne
-   touche pas les cartes. */
+   centré dans l'espace entre les cartes (bordure comprise) et sur leur hauteur (les cartes
+   d'une rangée ont la même). Plus petit que l'espace : il ne touche pas les cartes. */
 .card:not(:last-child)::after {
   content: ""; position: absolute; z-index: 1;
-  right: calc(-1 * (var(--card-border) + var(--loop-gap) / 2)); top: 82px; transform: translate(50%, -50%);
+  right: calc(-1 * (var(--card-border) + var(--loop-gap) / 2)); top: 50%; transform: translate(50%, -50%);
   width: var(--badge); height: var(--badge); border-radius: 50%;
   border: 3px solid var(--outline);
   background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 9' shape-rendering='crispEdges'><path fill='%232a1d1a' d='M4 1h1v1h1v1h1v1h1v1h-1v1h-1v1h-1v1h-1v-2h-3v-3h3z'/></svg>") center / 16px 16px no-repeat,
