@@ -79,10 +79,74 @@ const EN = {
 const FR_SOON = "Bientôt sur Steam";
 
 // ---------- Langue ----------
-const FR = {};
-document.querySelectorAll("[data-i18n]").forEach((el) => { FR[el.dataset.i18n] = el.textContent; });
-const FR_TITLE = document.title;
-const EN_TITLE = "John'cremental — Bring your grandfather's farm back to life";
+// La page est écrite en anglais (langue par défaut) ; le français est une traduction.
+const FR = {
+  skip: "Aller au contenu",
+  nav_story: "L'histoire",
+  nav_game: "Le jeu",
+  nav_gallery: "Galerie",
+  nav_faq: "FAQ",
+  cta_wishlist_short: "Liste de souhaits",
+  hero_eyebrow: "Jeu incrémental cosy · Pixel art",
+  hero_tagline: "La ferme de ton grand-père t'attend. Fais-la renaître.",
+  hero_text: "Plante, récolte, embauche des gobelins qui travaillent pour un bol de soupe, puis renais plus fort grâce aux graines d'or. Une ferme qui n'arrête jamais de pousser.",
+  cta_wishlist: "Ajouter à ma liste de souhaits",
+  cta_demo: "Jouer à la démo gratuite",
+  badge_free: "Démo gratuite",
+  badge_browser: "Jouable dans le navigateur",
+  badge_save: "Sauvegarde automatique",
+  story_caption: "La ferme d'autrefois, au temps des graines d'or.",
+  story_eyebrow: "Il était une fois Blémont",
+  story_title: "Autrefois, la vallée nourrissait tout le royaume.",
+  story_p1: "On y semait des graines d'or, confiées aux fermiers par un vieux sage. Puis vint l'orage. Des années plus tard, John revient sur les terres de son grand-père : une ferme en ruine, un gobelin endormi près du feu, et une lettre.",
+  story_p2: "À toi de remettre la ferme sur pied, de ranimer le village… et de découvrir ce que le vieux sage sait vraiment des graines d'or.",
+  loop_eyebrow: "Comment on joue",
+  loop_title: "Une boucle simple. Une ferme qui grandit sans fin.",
+  loop_1_title: "Plante et vends",
+  loop_1_text: "Radis, blé, citrouille, tournesol, pomme de terre… Chaque nouvelle graine rapporte plus que la précédente.",
+  loop_2_title: "Automatise",
+  loop_2_text: "Embauche les gobelins de la mine : ils récoltent et replantent pour toi, même quand tu t'absentes.",
+  loop_3_title: "Développe",
+  loop_3_text: "Arroseur, moulin, enclos, poules pondeuses : chaque amélioration change ta façon de jouer.",
+  loop_4_title: "Renais",
+  loop_4_text: "Quand le vieux sage t'appelle, recommence en gardant tes graines débloquées, avec des graines dorées et des bonus permanents. Chaque partie va plus loin, et plus vite.",
+  f1_title: "Un village qui reprend vie",
+  f1_text: "La grand-mère qui somnole sur son banc, le forgeron à son enclume, la lavandière, le barde… Et un beau jour, Barnabé l'éleveur arrive en charrette avec ses bêtes.",
+  f2_title: "Des poules, des œufs, des pièces",
+  f2_text: "Répare le vieil enclos, achète des poules à Barnabé et mène-les toi-même jusqu'à la ferme. Elles pondent sans relâche, et leurs œufs se vendent cher au marché.",
+  f3_title: "Une ferme qui travaille pour toi",
+  f3_text: "Le fossé se remplit, le moulin tourne, les gobelins s'activent et la soupe mijote au camp. Fais une pause : en revenant, la récolte t'attend.",
+  gallery_eyebrow: "Galerie",
+  gallery_title: "Un monde en pixel art fait main",
+  demo_eyebrow: "Gratuit, tout de suite",
+  demo_title: "Essaie la démo dans ton navigateur",
+  demo_text: "Environ deux heures de jeu, trois renaissances et l'arrivée de Barnabé. Rien à installer, et ta progression est sauvegardée automatiquement.",
+  fact_free: "Gratuite",
+  fact_time: "≈ 2 h de jeu",
+  fact_controls: "Clavier et souris",
+  fact_lang: "EN, FR, ES, DE, PT-BR",
+  cta_play_now: "Jouer maintenant",
+  wish_title: "Ajoute John'cremental à ta liste de souhaits",
+  wish_text: "C'est gratuit et ça prend dix secondes. Pour un petit jeu indépendant, c'est ce qui compte le plus : chaque liste de souhaits aide le jeu à être vu sur Steam, et tu seras prévenu dès sa sortie.",
+  steam_note: "La page Steam arrive très bientôt. En attendant, la démo est jouable gratuitement !",
+  faq_title: "Questions fréquentes",
+  q1: "C'est quoi, un jeu incrémental ?",
+  a1: "Un jeu où tes gains grandissent sans cesse : tu réinvestis pour produire plus, tu automatises, puis tu recommences plus fort. John'cremental y ajoute une vraie ferme à parcourir, des personnages et une histoire.",
+  q2: "Quand sort le jeu complet ?",
+  a2: "Le jeu est en développement. Ajoute-le à ta liste de souhaits pour être prévenu de sa sortie ; en attendant, la démo est jouable gratuitement.",
+  q3: "Le jeu avance quand je ne joue pas ?",
+  a3: "Oui : tes gobelins récoltent et tes poules pondent pendant ton absence, jusqu'à deux heures comptées. Tu retrouves ta récolte en revenant.",
+  q4: "Sur quoi peut-on jouer ?",
+  a4: "Le jeu complet est prévu sur PC (Steam). La démo se joue directement dans le navigateur, au clavier et à la souris.",
+  q6: "Dans quelles langues ?",
+  a6: "Anglais, français, espagnol, allemand et portugais du Brésil, au choix dans le menu du jeu.",
+  q5: "Ma partie est-elle sauvegardée ?",
+  a5: "Oui, automatiquement, dans ton navigateur. Attention : en navigation privée, ou si tu effaces les données du site, la partie est perdue.",
+  footer_demo: "Démo",
+  footer_credits: "Pixel art basé sur le pack Sunnyside World. Bruitages : packs audio de Kenney (kenney.nl, CC0). Ambiances de l'intro (OpenGameArt, CC0) : « Birds and Wind » de Spring Spring (oiseaux d'isaiah658, syncopika et pauliuw), « Rain + Long Thunder » de WuxiaScrub. Polices MedievalSharp et Alegreya.",
+};
+const FR_TITLE = "John'cremental — Fais renaître la ferme de ton grand-père";
+const EN_TITLE = document.title;
 
 function storedLang() {
   try { return localStorage.getItem("lang"); } catch { return null; }
@@ -91,7 +155,8 @@ function storeLang(lang) {
   try { localStorage.setItem("lang", lang); } catch { /* stockage indisponible */ }
 }
 
-let lang = storedLang() || ((navigator.language || "fr").toLowerCase().startsWith("fr") ? "fr" : "en");
+// Anglais par défaut, pour tout le monde ; le bouton FR passe en français (choix retenu).
+let lang = storedLang() || "en";
 
 function applyLang() {
   const dict = lang === "en" ? EN : FR;
