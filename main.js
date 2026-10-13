@@ -145,8 +145,9 @@ const FR = {
   footer_demo: "Démo",
   footer_credits: "Pixel art basé sur le pack Sunnyside World. Bruitages : packs audio de Kenney (kenney.nl, CC0). Ambiances de l'intro (OpenGameArt, CC0) : « Birds and Wind » de Spring Spring (oiseaux d'isaiah658, syncopika et pauliuw), « Rain + Long Thunder » de WuxiaScrub. Polices MedievalSharp et Alegreya.",
 };
-const FR_TITLE = "John'cremental — Fais renaître la ferme de ton grand-père";
-const EN_TITLE = document.title;
+// Le titre de l'onglet reste le nom du jeu, dans les deux langues.
+const FR_TITLE = "John'cremental";
+const EN_TITLE = "John'cremental";
 
 function storedLang() {
   try { return localStorage.getItem("lang"); } catch { return null; }
