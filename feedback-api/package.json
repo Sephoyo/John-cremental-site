@@ -1,0 +1,11 @@
+{
+  "name": "johncremental-feedback",
+  "private": true,
+  "type": "module",
+  "description": "Avis des joueurs de John'cremental (site et jeu).",
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning server.js",
+    "test": "node --disable-warning=ExperimentalWarning --test"
+  },
+  "engines": { "node": ">=24" }
+}

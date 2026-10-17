@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,600;0,700;1,400&family=MedievalSharp&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=6">
+  <link rel="stylesheet" href="style.css?v=7">
 </head>
 <body>
   <a class="skip" href="#main" data-i18n="skip">Skip to content</a>
@@ -35,6 +35,7 @@
         <a href="#jeu" data-i18n="nav_game">The game</a>
         <a href="#galerie" data-i18n="nav_gallery">Gallery</a>
         <a href="#faq" data-i18n="nav_faq">FAQ</a>
+        <a href="#avis" data-i18n="nav_feedback">Feedback</a>
       </nav>
       <div class="topbar__actions">
         <button class="lang" type="button" id="lang-toggle" aria-label="Passer en français">FR</button>
@@ -286,6 +287,40 @@
         </details>
       </div>
     </section>
+
+    <!-- Avis -->
+    <section class="section section--parchment" id="avis">
+      <div class="wrap feedback">
+        <p class="eyebrow eyebrow--ink center" data-i18n="fb_eyebrow">Your feedback</p>
+        <h2 class="center" data-i18n="fb_title">Tell me what you think</h2>
+        <p class="center feedback__intro" data-i18n="fb_text">A bug, an idea, a favourite moment? Every message is read, and it helps shape the full game.</p>
+        <form class="feedback__form" id="feedback-form" novalidate>
+          <fieldset class="feedback__types">
+            <legend class="feedback__label" data-i18n="fb_type">It's…</legend>
+            <label class="pill"><input type="radio" name="type" value="review" checked> <span data-i18n="fb_review">A review</span></label>
+            <label class="pill"><input type="radio" name="type" value="bug"> <span data-i18n="fb_bug">A bug</span></label>
+            <label class="pill"><input type="radio" name="type" value="idea"> <span data-i18n="fb_idea">An idea</span></label>
+          </fieldset>
+          <fieldset class="stars" id="feedback-stars">
+            <legend class="feedback__label" data-i18n="fb_rating">Your rating (optional)</legend>
+            <label><input type="radio" name="rating" value="1"><span aria-hidden="true">★</span><span class="sr" data-i18n="fb_star1">1 star</span></label>
+            <label><input type="radio" name="rating" value="2"><span aria-hidden="true">★</span><span class="sr" data-i18n="fb_star2">2 stars</span></label>
+            <label><input type="radio" name="rating" value="3"><span aria-hidden="true">★</span><span class="sr" data-i18n="fb_star3">3 stars</span></label>
+            <label><input type="radio" name="rating" value="4"><span aria-hidden="true">★</span><span class="sr" data-i18n="fb_star4">4 stars</span></label>
+            <label><input type="radio" name="rating" value="5"><span aria-hidden="true">★</span><span class="sr" data-i18n="fb_star5">5 stars</span></label>
+          </fieldset>
+          <label class="feedback__label" for="feedback-message" data-i18n="fb_message">Your message</label>
+          <textarea id="feedback-message" name="message" rows="5" maxlength="2000" data-i18n-placeholder="fb_message_ph" placeholder="What did you like? What bothered you?"></textarea>
+          <label class="feedback__label" for="feedback-email" data-i18n="fb_email">Email (optional)</label>
+          <input id="feedback-email" name="email" type="email" maxlength="200" autocomplete="email" data-i18n-placeholder="fb_email_ph" placeholder="If you'd like a reply">
+          <p class="feedback__small" data-i18n="fb_privacy">Your email is only used to reply to you. It is never shared.</p>
+          <!-- Champ piège pour les robots (caché aux humains). -->
+          <input class="feedback__trap" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button class="btn btn--brass" type="submit" id="feedback-send"><span class="btn__icon" aria-hidden="true">✉</span> <span data-i18n="fb_send">Send</span></button>
+          <p class="feedback__status" id="feedback-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
   </main>
 
   <footer class="footer">
@@ -297,6 +332,7 @@
       <p class="footer__links">
         <a data-link="steam" href="#souhaits">Steam</a>
         <a data-link="demo" href="#demo" data-i18n="footer_demo">Demo</a>
+        <a href="#avis" data-i18n="nav_feedback">Feedback</a>
       </p>
       <p class="footer__small" data-i18n="footer_credits">Pixel art based on the Sunnyside World asset pack. Sound effects: Kenney audio packs (kenney.nl, CC0). Intro ambience (OpenGameArt, CC0): “Birds and Wind” by Spring Spring (birds by isaiah658, syncopika and pauliuw), “Rain + Long Thunder” by WuxiaScrub. Fonts: MedievalSharp and Alegreya.</p>
       <p class="footer__small">© 2026 John'cremental</p>
@@ -308,6 +344,6 @@
     <button class="lightbox__close" type="button" id="lightbox-close" aria-label="Close">✕</button>
   </dialog>
 
-  <script src="main.js?v=6"></script>
+  <script src="main.js?v=7"></script>
 </body>
 </html>

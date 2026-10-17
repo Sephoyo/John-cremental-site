@@ -8,6 +8,8 @@
 const LINKS = {
   steam: "",
   demo: "demo/",
+  // API des avis (feedback-api/, déployée sur le même domaine, chemin /api).
+  feedback: "/api/feedback",
 };
 // =====================================================================
 
@@ -17,6 +19,28 @@ const EN = {
   nav_game: "The game",
   nav_gallery: "Gallery",
   nav_faq: "FAQ",
+  nav_feedback: "Feedback",
+  fb_eyebrow: "Your feedback",
+  fb_title: "Tell me what you think",
+  fb_text: "A bug, an idea, a favourite moment? Every message is read, and it helps shape the full game.",
+  fb_type: "It's…",
+  fb_review: "A review",
+  fb_bug: "A bug",
+  fb_idea: "An idea",
+  fb_rating: "Your rating (optional)",
+  fb_star1: "1 star", fb_star2: "2 stars", fb_star3: "3 stars", fb_star4: "4 stars", fb_star5: "5 stars",
+  fb_message: "Your message",
+  fb_message_ph: "What did you like? What bothered you?",
+  fb_email: "Email (optional)",
+  fb_email_ph: "If you'd like a reply",
+  fb_privacy: "Your email is only used to reply to you. It is never shared.",
+  fb_send: "Send",
+  fb_sending: "Sending…",
+  fb_thanks: "Thank you! Your message has been sent.",
+  fb_empty: "Write a message or pick a rating.",
+  fb_bad_email: "This email address doesn't look right.",
+  fb_rate: "Too many messages in a short time: try again in a few minutes.",
+  fb_error: "The message couldn't be sent. Please try again later.",
   cta_wishlist_short: "Wishlist",
   hero_eyebrow: "Cozy incremental game · Pixel art",
   hero_tagline: "Your grandfather's farm is waiting. Bring it back to life.",
@@ -88,6 +112,28 @@ const FR = {
   nav_game: "Le jeu",
   nav_gallery: "Galerie",
   nav_faq: "FAQ",
+  nav_feedback: "Ton avis",
+  fb_eyebrow: "Ton avis",
+  fb_title: "Dis-moi ce que tu en penses",
+  fb_text: "Un bug, une idée, un moment préféré ? Chaque message est lu, et il aide à construire le jeu complet.",
+  fb_type: "C'est…",
+  fb_review: "Un avis",
+  fb_bug: "Un bug",
+  fb_idea: "Une idée",
+  fb_rating: "Ta note (facultatif)",
+  fb_star1: "1 étoile", fb_star2: "2 étoiles", fb_star3: "3 étoiles", fb_star4: "4 étoiles", fb_star5: "5 étoiles",
+  fb_message: "Ton message",
+  fb_message_ph: "Qu'est-ce qui t'a plu ? Qu'est-ce qui t'a gêné ?",
+  fb_email: "E-mail (facultatif)",
+  fb_email_ph: "Si tu veux une réponse",
+  fb_privacy: "Ton e-mail ne sert qu'à te répondre. Il n'est jamais partagé.",
+  fb_send: "Envoyer",
+  fb_sending: "Envoi…",
+  fb_thanks: "Merci ! Ton message est bien envoyé.",
+  fb_empty: "Écris un message ou choisis une note.",
+  fb_bad_email: "Cette adresse e-mail ne semble pas correcte.",
+  fb_rate: "Trop de messages en peu de temps : réessaie dans quelques minutes.",
+  fb_error: "Le message n'a pas pu partir. Réessaie un peu plus tard.",
   cta_wishlist_short: "Liste de souhaits",
   hero_eyebrow: "Jeu incrémental cosy · Pixel art",
   hero_tagline: "La ferme de ton grand-père t'attend. Fais-la renaître.",
@@ -170,6 +216,10 @@ function applyLang() {
     const text = dict[el.dataset.i18n];
     if (text) el.textContent = text;
   });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+    const text = dict[el.dataset.i18nPlaceholder];
+    if (text) el.placeholder = text;
+  });
   const toggle = document.getElementById("lang-toggle");
   toggle.textContent = lang === "en" ? "FR" : "EN";
   toggle.setAttribute("aria-label", lang === "en" ? "Passer en français" : "Switch to English");
@@ -221,6 +271,63 @@ function applyLinks() {
 }
 
 applyLang();
+
+// ---------- Avis ----------
+const feedbackForm = document.getElementById("feedback-form");
+if (feedbackForm) {
+  const status = document.getElementById("feedback-status");
+  const sendButton = document.getElementById("feedback-send");
+  const stars = [...document.querySelectorAll("#feedback-stars label")];
+  // Les étoiles s'allument jusqu'à celle survolée, sinon jusqu'à celle choisie.
+  const paintStars = (upTo) => stars.forEach((label, i) => label.classList.toggle("is-on", i < upTo));
+  const chosen = () => Number(feedbackForm.querySelector('input[name="rating"]:checked')?.value || 0);
+  stars.forEach((label, i) => {
+    label.addEventListener("mouseenter", () => paintStars(i + 1));
+    label.addEventListener("mouseleave", () => paintStars(chosen()));
+    label.querySelector("input").addEventListener("change", () => paintStars(chosen()));
+  });
+  const say = (key, ok) => {
+    status.textContent = (lang === "en" ? EN : FR)[key];
+    status.classList.toggle("is-ok", Boolean(ok));
+    status.classList.toggle("is-error", !ok);
+  };
+  feedbackForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const data = new FormData(feedbackForm);
+    const body = {
+      type: data.get("type"),
+      rating: chosen() || null,
+      message: String(data.get("message") || "").trim(),
+      email: String(data.get("email") || "").trim(),
+      website: data.get("website"),
+      source: "site",
+      lang,
+    };
+    if (!body.message && !body.rating) return say("fb_empty", false);
+    if (body.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.email)) return say("fb_bad_email", false);
+    sendButton.disabled = true;
+    status.classList.remove("is-ok", "is-error");
+    status.textContent = (lang === "en" ? EN : FR).fb_sending;
+    try {
+      const res = await fetch(LINKS.feedback, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (res.ok) {
+        feedbackForm.reset();
+        paintStars(0);
+        say("fb_thanks", true);
+      } else {
+        say(res.status === 429 ? "fb_rate" : "fb_error", false);
+      }
+    } catch {
+      say("fb_error", false);
+    } finally {
+      sendButton.disabled = false;
+    }
+  });
+}
 
 // ---------- Galerie ----------
 const lightbox = document.getElementById("lightbox");
