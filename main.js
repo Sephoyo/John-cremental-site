@@ -48,6 +48,7 @@ const EN = {
   f3_text: "The ditch fills up, the mill turns, the goblins get busy and soup simmers at the camp. Take a break: your harvest will be waiting.",
   gallery_eyebrow: "Gallery",
   gallery_title: "A hand-crafted pixel art world",
+  gallery_text: "From sunrise to nights lit by fireflies, the valley lives at its own pace.",
   demo_eyebrow: "Free, right now",
   demo_title: "Try the demo in your browser",
   demo_text: "About two hours of play, three rebirths and Barnabé's arrival. Nothing to install, and your progress is saved automatically.",
@@ -118,6 +119,7 @@ const FR = {
   f3_text: "Le fossé se remplit, le moulin tourne, les gobelins s'activent et la soupe mijote au camp. Fais une pause : en revenant, la récolte t'attend.",
   gallery_eyebrow: "Galerie",
   gallery_title: "Un monde en pixel art fait main",
+  gallery_text: "Du lever du jour aux nuits de lucioles, la vallée vit à son rythme.",
   demo_eyebrow: "Gratuit, tout de suite",
   demo_title: "Essaie la démo dans ton navigateur",
   demo_text: "Environ deux heures de jeu, trois renaissances et l'arrivée de Barnabé. Rien à installer, et ta progression est sauvegardée automatiquement.",
@@ -170,7 +172,20 @@ function applyLang() {
   const toggle = document.getElementById("lang-toggle");
   toggle.textContent = lang === "en" ? "FR" : "EN";
   toggle.setAttribute("aria-label", lang === "en" ? "Passer en français" : "Switch to English");
+  applyShots();
   applyLinks();
+}
+
+// Les captures du jeu existent en anglais et en français (assets/shots/en|fr) : on montre
+// celles de la langue choisie, dans la page comme dans la visionneuse.
+const SHOTS_VERSION = 3;
+function applyShots() {
+  document.querySelectorAll("img[data-shot]").forEach((img) => {
+    const src = `assets/shots/${lang}/${img.dataset.shot}.png?v=${SHOTS_VERSION}`;
+    if (img.getAttribute("src") !== src) img.setAttribute("src", src);
+    const item = img.closest(".gallery__item");
+    if (item) item.dataset.full = src;
+  });
 }
 
 document.getElementById("lang-toggle").addEventListener("click", () => {

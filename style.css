@@ -229,6 +229,7 @@ p { margin: 0 0 1em; }
 .feature__text .sprite { margin-bottom: 14px; --px: 4; }
 
 /* Galerie */
+.gallery__lead { max-width: 560px; margin: 12px auto 0; opacity: .85; }
 .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 40px; }
 .gallery__item {
   padding: 0; border: 4px solid var(--outline); border-radius: var(--radius); background: var(--wood);
