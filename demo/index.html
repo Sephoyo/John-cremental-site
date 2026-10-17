@@ -38,7 +38,7 @@ body {
 }
 
 #status {
-	background-color: #242424;
+	background-color: #1f1820;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -92,7 +92,43 @@ body {
 		</style>
 		<link id="-gd-engine-icon" rel="icon" type="image/png" href="index.icon.png" />
 <link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@400;700&family=MedievalSharp&display=swap" rel="stylesheet">
+<style>
+/* Écran de chargement aux couleurs du site : la ferme en fond, le titre, une barre dorée. */
+body, #status { background-color: #1f1820; }
+#status { gap: 18px; font-family: "Alegreya", Georgia, serif; color: #fff2d8; }
+#status-splash { position: absolute; inset: 0; filter: brightness(0.45) saturate(0.9); object-fit: cover !important; }
+#status-title, #status-text, #status-progress, #status-percent { position: relative; z-index: 1; }
+#status-title { font-family: "MedievalSharp", Georgia, serif; font-size: clamp(2.2rem, 7vw, 4.5rem); color: #face6e;
+  text-shadow: 4px 4px 0 #2a1d1a, -2px -2px 0 #2a1d1a, 2px -2px 0 #2a1d1a, -2px 2px 0 #2a1d1a; margin: 0; }
+#status-text { font-size: clamp(1rem, 2.6vw, 1.35rem); text-shadow: 2px 2px 0 #2a1d1a; margin: 0; }
+#status-progress { position: relative !important; bottom: auto !important; width: min(420px, 70vw) !important; height: 22px;
+  appearance: none; -webkit-appearance: none; border: 3px solid #2a1d1a; border-radius: 4px; background: #4a2f22;
+  box-shadow: 0 4px 0 #2a1d1a; overflow: hidden; }
+#status-progress::-webkit-progress-bar { background: #4a2f22; }
+#status-progress::-webkit-progress-value { background: linear-gradient(#face6e, #d6a54a 60%, #a8772f); }
+#status-progress::-moz-progress-bar { background: linear-gradient(#face6e, #d6a54a 60%, #a8772f); }
+#status-percent { font-size: 1rem; color: #e8d5aa; text-shadow: 2px 2px 0 #2a1d1a; margin: 0; min-height: 1.3em; }
+</style>
+<script>
+// Titre, texte (français ou anglais selon le navigateur) et pourcentage sous la barre.
+document.addEventListener("DOMContentLoaded", function () {
+  var status = document.getElementById("status");
+  var bar = document.getElementById("status-progress");
+  if (!status || !bar) return;
+  var fr = (navigator.language || "").toLowerCase().indexOf("fr") === 0;
+  function line(id, tag, text) { var el = document.createElement(tag); el.id = id; el.textContent = text; return el; }
+  status.insertBefore(line("status-title", "h1", "John'cremental"), bar);
+  status.insertBefore(line("status-text", "p", fr ? "La ferme se réveille…" : "The farm is waking up…"), bar);
+  var percent = line("status-percent", "p", "");
+  status.insertBefore(percent, bar.nextSibling);
+  setInterval(function () {
+    percent.textContent = bar.max > 0 && bar.value > 0 ? Math.floor(100 * bar.value / bar.max) + " %" : "";
+  }, 200);
+});
+</script>
 	</head>
 	<body>
 		<canvas id="canvas">
@@ -104,14 +140,14 @@ body {
 		</noscript>
 
 		<div id="status">
-			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="index.png" alt="">
+			<img id="status-splash" class="show-image--true fullsize--true use-filter--false" src="index.png" alt="">
 			<progress id="status-progress"></progress>
 			<div id="status-notice"></div>
 		</div>
 
 		<script src="index.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":27757604,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":28078924,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 
