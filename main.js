@@ -178,7 +178,7 @@ function applyLang() {
 
 // Les captures du jeu existent en anglais et en français (assets/shots/en|fr) : on montre
 // celles de la langue choisie, dans la page comme dans la visionneuse.
-const SHOTS_VERSION = 3;
+const SHOTS_VERSION = 4;
 function applyShots() {
   document.querySelectorAll("img[data-shot]").forEach((img) => {
     const src = `assets/shots/${lang}/${img.dataset.shot}.png?v=${SHOTS_VERSION}`;
