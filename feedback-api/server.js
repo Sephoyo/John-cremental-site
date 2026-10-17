@@ -3,7 +3,9 @@
 // - POST /api/feedback : un avis (JSON), rangé dans une base SQLite (DATA_DIR/feedback.db) ;
 //   si DISCORD_WEBHOOK_URL est réglé, il est aussi posté dans un salon Discord.
 // - GET /api/feedback/admin : la liste des avis (mot de passe ADMIN_PASSWORD, demandé par
-//   le navigateur) ; GET /api/feedback/admin.csv : la même chose en tableur.
+//   le navigateur) ; GET /api/feedback/admin.csv : la même chose en tableur ;
+//   GET /api/feedback/save/<id> : la sauvegarde jointe à un bug (save.json du jeu, à
+//   déposer dans le dossier de sauvegarde pour rejouer la partie du joueur).
 // - GET /api/health : « ok ».
 // Les chemins marchent aussi sans le préfixe /api (si le proxy le retire).
 // Aucune dépendance : Node 24 (node:sqlite). Garde-fous : taille limitée, champs vérifiés,
@@ -26,8 +28,8 @@ const IP_SALT = process.env.IP_SALT || "john-cremental";
 const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || "").split(",").map((o) => o.trim()).filter(Boolean);
 
 const TYPES = ["review", "bug", "idea"];
-const LIMITS = { message: 2000, email: 200, lang: 10, version: 20, platform: 20, source: 10, progress: 600 };
-const MAX_BODY = 16 * 1024;
+const LIMITS = { message: 2000, email: 200, lang: 10, version: 20, platform: 20, source: 10, progress: 600, save: 60000 };
+const MAX_BODY = 64 * 1024;
 const RATE_WINDOW = 10 * 60 * 1000;
 const RATE_MAX = 5;
 
@@ -47,10 +49,15 @@ db.exec(`CREATE TABLE IF NOT EXISTS feedback (
   progress TEXT,
   ip_hash TEXT
 )`);
+// Colonne ajoutée après coup (bases déjà créées) : la sauvegarde jointe aux bugs.
+if (!db.prepare("PRAGMA table_info(feedback)").all().some((c) => c.name === "save")) {
+  db.exec("ALTER TABLE feedback ADD COLUMN save TEXT");
+}
 const insert = db.prepare(`INSERT INTO feedback
-  (created_at, type, rating, message, email, source, lang, version, platform, progress, ip_hash)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
-const listAll = db.prepare("SELECT * FROM feedback ORDER BY id DESC");
+  (created_at, type, rating, message, email, source, lang, version, platform, progress, ip_hash, save)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
+const listAll = db.prepare("SELECT *, save IS NOT NULL AS has_save FROM feedback ORDER BY id DESC");
+const getSave = db.prepare("SELECT save FROM feedback WHERE id = ?");
 
 const hits = new Map();
 
@@ -101,6 +108,12 @@ export function validate(body) {
   if (email !== "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return ["email", null];
   let progress = "";
   if (body.progress && typeof body.progress === "object") progress = JSON.stringify(body.progress).slice(0, LIMITS.progress);
+  // La sauvegarde n'est gardée que pour un bug, entière (tronquée, elle ne servirait à rien).
+  let save = null;
+  if (type === "bug" && body.save && typeof body.save === "object" && !Array.isArray(body.save)) {
+    const text = JSON.stringify(body.save);
+    if (text.length <= LIMITS.save) save = text;
+  }
   return [null, {
     type, rating, message, email,
     source: text(body.source, LIMITS.source) || "site",
@@ -108,6 +121,7 @@ export function validate(body) {
     version: text(body.version, LIMITS.version),
     platform: text(body.platform, LIMITS.platform),
     progress,
+    save,
   }];
 }
 
@@ -126,7 +140,7 @@ async function notifyDiscord(entry) {
         embeds: [{
           title: `${label} ${stars}`,
           description: (entry.message || "(pas de message)").slice(0, 3900),
-          footer: { text: [details, entry.email ? "e-mail laissé" : "", entry.progress].filter(Boolean).join(" · ").slice(0, 2000) },
+          footer: { text: [details, entry.email ? "e-mail laissé" : "", entry.save ? "partie jointe" : "", entry.progress].filter(Boolean).join(" · ").slice(0, 2000) },
           timestamp: new Date().toISOString(),
         }],
       }),
@@ -182,7 +196,7 @@ function adminPage(rows) {
     <td>${r.rating ? "★".repeat(r.rating) : ""}</td>
     <td class="msg">${escapeHtml(r.message)}</td>
     <td>${escapeHtml(r.email)}</td>
-    <td>${escapeHtml([r.source, r.platform, r.version, r.lang].filter(Boolean).join(" · "))}<br><small>${escapeHtml(r.progress)}</small></td>
+    <td>${escapeHtml([r.source, r.platform, r.version, r.lang].filter(Boolean).join(" · "))}<br><small>${escapeHtml(r.progress)}</small>${r.has_save ? `<br><a href="save/${r.id}">télécharger la partie (save.json)</a>` : ""}</td>
   </tr>`).join("");
   return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Avis — John'cremental</title><style>
@@ -197,7 +211,7 @@ th{color:#face6e}.msg{white-space:pre-wrap;max-width:520px}small{color:#c9ad7a}
 }
 
 function csv(rows) {
-  const cols = ["id", "created_at", "type", "rating", "message", "email", "source", "lang", "version", "platform", "progress"];
+  const cols = ["id", "created_at", "type", "rating", "message", "email", "source", "lang", "version", "platform", "progress", "has_save"];
   const cell = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
   return [cols.join(","), ...rows.map((r) => cols.map((c) => cell(r[c])).join(","))].join("\n");
 }
@@ -235,9 +249,23 @@ export const server = createServer(async (req, res) => {
       if (error) return send(res, 400, { ok: false, error }, cors);
       const ipHash = createHash("sha256").update(IP_SALT + clientIp(req)).digest("hex").slice(0, 16);
       insert.run(new Date().toISOString(), entry.type, entry.rating, entry.message, entry.email, entry.source,
-        entry.lang, entry.version, entry.platform, entry.progress, ipHash);
+        entry.lang, entry.version, entry.platform, entry.progress, ipHash, entry.save);
       notifyDiscord(entry);
       return send(res, 201, { ok: true }, cors);
+    }
+    const saveMatch = path.match(/^\/feedback\/(?:admin\/)?save\/(\d+)$/);
+    if (req.method === "GET" && saveMatch) {
+      if (!authorized(req)) {
+        return send(res, 401, "Mot de passe requis.", { "www-authenticate": 'Basic realm="Avis John\'cremental", charset="UTF-8"' });
+      }
+      const row = getSave.get(Number(saveMatch[1]));
+      if (!row || !row.save) return send(res, 404, { ok: false, error: "not_found" });
+      res.writeHead(200, {
+        "content-type": "application/json; charset=utf-8",
+        "content-disposition": `attachment; filename="save.json"`,
+        "cache-control": "no-store",
+      });
+      return res.end(JSON.stringify(JSON.parse(row.save), null, "\t"));
     }
     if (req.method === "GET" && (path === "/feedback/admin" || path === "/feedback/admin.csv")) {
       if (!authorized(req)) {
