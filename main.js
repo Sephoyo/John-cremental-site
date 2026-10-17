@@ -1,12 +1,13 @@
 // John'cremental — page de présentation.
 
 // ===== À REMPLIR =====================================================
-// Adresse de la page Steam (liste de souhaits) et de la démo (itch.io).
+// Adresse de la page Steam (liste de souhaits) et de la démo (la version web du jeu,
+// exportée dans demo/ : voir LISEZMOI.md).
 // Tant que l'une est vide, ses boutons mènent à la section correspondante
 // de la page (la démo) ou affichent « Bientôt sur Steam ».
 const LINKS = {
   steam: "",
-  demo: "",
+  demo: "demo/",
 };
 // =====================================================================
 
